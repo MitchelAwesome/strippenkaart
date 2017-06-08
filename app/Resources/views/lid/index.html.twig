@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% for type, messages in app.flashes() %}
+
+        {% for message in messages %}
+            <div class="flash-notice alert alert-{{ type }} text-center">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1>Leden Overzicht</h1>
+            <br>
+            <a href="{{ path('lid_new') }}" class="btn btn-md btn-success">Lid toevoegen</a>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for lid in lids %}
+
+        <div class="col-md-6">
+            <div class="row" style="border:1px solid #ddd; margin:0px; margin-bottom:30px; padding:15px;">
+                <div class="col-md-5 hidden" style="margin-bottom:0px;">
+                    <a href="{{ path('lid_show', { 'id':lid.id }) }}" class="thumbnail" style="margin-bottom:0px;">
+                        <img src="http://via.placeholder.com/350x350" alt="image">
+                    </a>
+                </div>
+                <div class="col-md-7">
+                    <h3><a href="{{ path('lid_show', { 'id':lid.id }) }}">{{ lid.voornaam ~' '~ lid.achternaam }}</a></h3>
+                    <p>
+                        {% set activeStrips %}{% endset %}
+                        {% set lastStripId %}{% endset %}
+
+                        {% set activeStrips = 0 %}
+                        {% for strip in lid.strippen %}
+
+                            {% if strip.used == 0 %}
+                                {% set activeStrips = activeStrips +1 %}
+                                {% set lastStripId = strip.id %}
+                            {% endif %}
+
+
+
+                        {% endfor %}
+
+                        Strippen over: {{ activeStrips }}
+                    </p>
+                    {% if lastStripId != '' %}
+                        <a href="{{ path("strip_gebruiken") }}/{{ lastStripId }}" class="btn btn-success btn-block-xs btn-md"
+                           onclick="return confirm('1 Strip gebruiken voor {{ lid.voornaam }}?');"
+                        >
+                            1 Strip gebruiken
+                        </a>
+                    {% else %}
+                        <a href="{{ path('strip_new', {'id':lid.id}) }}" class="btn btn-md btn-warning btn-block-xs">
+                            Strippen Toevoegen
+                        </a>
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}

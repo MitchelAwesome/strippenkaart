@@ -1,0 +1,189 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row" style="border:1px solid #ddd; margin:0px; margin-bottom:30px; padding:15px;">
+                <div class="col-xs-2 hidden" style="margin-bottom:0px;">
+                    <a href="#" class="thumbnail" style="margin-bottom:0px;">
+                        <img src="http://via.placeholder.com/350x350" alt="image">
+                    </a>
+                </div>
+                <div class="col-md-7">
+                    <h1><a href="#">{{ lid.voornaam }} {{ lid.achternaam }}</a></h1>
+                    <a href="{{ path('lid_edit', { 'id': lid.id }) }}"><i class="fa fa-edit"></i> Bewerken</a>
+                    <p>
+
+                        {% set activeStrips %}{% endset %}
+                        {% set lastStripId %}{% endset %}
+
+                        {% for strip in lid.strippen %}
+
+                            {% if strip.used == 0 %}
+                                {% set activeStrips = activeStrips +1 %}
+                            {% endif %}
+
+                            {% set lastStripId = strip.id %}
+
+                        {% endfor %}
+
+                        Strippen: {{ activeStrips }}
+
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-xs-12" style="margin-bottom:20px;">
+            <a href="{{ path('strip_new', {'id':lid.id}) }}" class="btn btn-lg btn-primary">Strippen Toevoegen</a>
+        </div>
+        <div class="col-xs-12" style="margin-bottom:30px;">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#beschikbaar">Beschikbaare Tickets</a></li>
+                <li><a data-toggle="tab" href="#gebruikt">Gebruikte Tickets</a></li>
+            </ul>
+        </div>
+
+        <div class="col-xs-12 tab-content">
+
+            <div id="beschikbaar" class="tab-pane fade in active">
+                <div class="row hidden-xs hidden-sm" style="border:1px solid #eee; margin:0px; margin-bottom:20px; padding:15px;">
+                    <div class="col-xs-4">
+                        <p>Prijs:</p>
+                    </div>
+                    <div class="col-xs-2">
+                        <p>Gekocht op:</p>
+                    </div>
+                </div>
+
+                {% for strip in lid.strippen %}
+                    {% if strip.used == 0 %}
+                    <div class="row" style="border:1px solid #eee; margin:0px; margin-bottom:20px; padding:15px;">
+                        <div class="col-xs-4 col-md-4">
+                            <p style="margin-top:0px;">&euro; {{ strip.price /100 }}</p>
+                        </div>
+                        <div class="col-xs-8 col-md-2">
+                            <p style="margin-top:0px;">{{ strip.purchasedAt | date('d-m-Y') }}</p>
+                        </div>
+                        <div class="col-md-6 text-right text-center-xs">
+                            <a href="{{ path("strip_edit",{"id":strip.id}) }}" class="btn btn-default btn-md btn-block-xs hidden-xs">
+                               <i class="fa fa-edit"></i>
+                            </a>
+                            <a href="{{ path("strip_gebruiken",{ "id":strip.id }) }}" class="btn btn-md btn-success btn-block-xs">Ticket Gebruiken</a>
+                        </div>
+                    </div>
+                    {%  endif %}
+                {% endfor %}
+
+
+            </div>
+            <div id="gebruikt" class="tab-pane fade">
+                <div class="row hidden-xs hidden-sm" style="border:1px solid #eee; margin:0px; margin-bottom:20px; padding:15px;">
+                    <div class="col-xs-2">
+                        <p></p>
+                    </div>
+                    <div class="col-xs-2">
+                        <p>Prijs:</p>
+                    </div>
+                    <div class="col-xs-2">
+                        <p>Gebruikt op:</p>
+                    </div>
+                </div>
+
+
+                {% for strip in lid.strippen %}
+                    {% if strip.used == 1 %}
+                        <div class="row" style="border:1px solid #eee; margin:0px; margin-bottom:20px; padding:15px;">
+                            <div class="col-xs-4 col-md-4">
+                                <p style="margin-top:0px;">&euro; {{ strip.price /100 }}</p>
+                            </div>
+                            <div class="col-xs-8 col-md-2">
+                                <p style="margin-top:0px;">{{ strip.purchasedAt | date('d-m-Y') }}</p>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <a href="{{ path("strip_herstellen",{"id":strip.id}) }}" class="btn btn-md btn-danger">Herstellen</a>
+                            </div>
+                        </div>
+                    {%  endif %}
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <table class="hidden">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ lid.id }}</td>
+            </tr>
+            <tr>
+                <th>Voornaam</th>
+                <td>{{ lid.voornaam }}</td>
+            </tr>
+            <tr>
+                <th>Achternaam</th>
+                <td>{{ lid.achternaam }}</td>
+            </tr>
+            <tr>
+                <th>Geboortedatum</th>
+                <td>{% if lid.geboortedatum %}{{ lid.geboortedatum|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Geslacht</th>
+                <td>{{ lid.geslacht }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ lid.email }}</td>
+            </tr>
+            <tr>
+                <th>Tel</th>
+                <td>{{ lid.tel }}</td>
+            </tr>
+            <tr>
+                <th>Tel2</th>
+                <td>{{ lid.tel2 }}</td>
+            </tr>
+            <tr>
+                <th>Straatnaam</th>
+                <td>{{ lid.straatnaam }}</td>
+            </tr>
+            <tr>
+                <th>Huisnummer</th>
+                <td>{{ lid.huisnummer }}</td>
+            </tr>
+            <tr>
+                <th>Postcode</th>
+                <td>{{ lid.postcode }}</td>
+            </tr>
+            <tr>
+                <th>Wijk</th>
+                <td>{{ lid.wijk }}</td>
+            </tr>
+            <tr>
+                <th>Stad</th>
+                <td>{{ lid.stad }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="hidden">
+        <li>
+            <a href="{{ path('lid_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('lid_edit', { 'id': lid.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

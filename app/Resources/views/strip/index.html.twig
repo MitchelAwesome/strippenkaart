@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Strips list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Purchasedat</th>
+                <th>Used</th>
+                <th>Usedat</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for strip in strips %}
+            <tr>
+                <td><a href="{{ path('strip_show', { 'id': strip.id }) }}">{{ strip.id }}</a></td>
+                <td>{% if strip.purchasedAt %}{{ strip.purchasedAt|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if strip.used %}Yes{% else %}No{% endif %}</td>
+                <td>{% if strip.usedAt %}{{ strip.usedAt|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ strip.price }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('strip_show', { 'id': strip.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('strip_edit', { 'id': strip.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('strip_new') }}">Create a new strip</a>
+        </li>
+    </ul>
+{% endblock %}
