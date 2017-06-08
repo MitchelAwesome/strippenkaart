@@ -1,0 +1,229 @@
+
+$xs:0px;
+$sm:768px;
+$md:992px;
+$lg:1200px;
+
+$min: min-width;
+$max: max-width;
+@mixin at-query ($constraint_, $viewport1_, $viewport2_:null) {
+  $constraint: $constraint_; $viewport1: $viewport1_; $viewport2: $viewport2_;
+  @if type-of($constraint_) == number {
+    $viewport1 : $constraint_; $viewport2 : $viewport1_; $constraint : null;
+  }
+  @if $constraint == $min {
+    @media screen and ($min: $viewport1) {
+      @content;
+    }
+  } @else if $constraint == $max {
+    @media screen and ($max: $viewport1) {
+      @content;
+    }
+  } @else {
+    @media screen and ($min: $viewport1) and ($max: $viewport2) {
+      @content;
+    }
+  }
+}
+
+.text-left-not-xs, .text-left-not-sm, .text-left-not-md, .text-left-not-lg {
+  text-align: left;
+}
+.text-center-not-xs, .text-center-not-sm, .text-center-not-md, .text-center-not-lg {
+  text-align: center;
+}
+.text-right-not-xs, .text-right-not-sm, .text-right-not-md, .text-right-not-lg {
+  text-align: right;
+}
+.text-justify-not-xs, .text-justify-not-sm, .text-justify-not-md, .text-justify-not-lg {
+  text-align: justify;
+}
+
+@media (max-width: 767px) {
+  .text-left-not-xs, .text-center-not-xs, .text-right-not-xs, .text-justify-not-xs {
+    text-align: inherit;
+  }
+  .text-left-xs {
+    text-align: left;
+  }
+  .text-center-xs {
+    text-align: center;
+  }
+  .text-right-xs {
+    text-align: right;
+  }
+  .text-justify-xs {
+    text-align: justify;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .text-left-not-sm, .text-center-not-sm, .text-right-not-sm, .text-justify-not-sm {
+    text-align: inherit;
+  }
+  .text-left-sm {
+    text-align: left;
+  }
+  .text-center-sm {
+    text-align: center;
+  }
+  .text-right-sm {
+    text-align: right;
+  }
+  .text-justify-sm {
+    text-align: justify;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .text-left-not-md, .text-center-not-md, .text-right-not-md, .text-justify-not-md {
+    text-align: inherit;
+  }
+  .text-left-md {
+    text-align: left;
+  }
+  .text-center-md {
+    text-align: center;
+  }
+  .text-right-md {
+    text-align: right;
+  }
+  .text-justify-md {
+    text-align: justify;
+  }
+}
+@media (min-width: 1200px) {
+  .text-left-not-lg, .text-center-not-lg, .text-right-not-lg, .text-justify-not-lg {
+    text-align: inherit;
+  }
+  .text-left-lg {
+    text-align: left;
+  }
+  .text-center-lg {
+    text-align: center;
+  }
+  .text-right-lg {
+    text-align: right;
+  }
+  .text-justify-lg {
+    text-align: justify;
+  }
+}
+
+// helpers
+
+.bg-transparent{ background-color:transparent !important; }
+.bg-white{ background-color:white !important; }
+
+
+body{
+  font-size:16px;
+}
+
+.container{
+
+  @include at-query($min,$md)
+  {
+    margin-top:50px;
+    margin-bottom:50px;
+  }
+}
+
+.container-inner
+{
+  background-color:white;
+
+}
+
+
+#menuhandle
+{
+  display:block;
+  width:50px;
+  height:50px;
+  line-height: 50px;
+
+  text-align: center;
+  @include at-query($min,$sm)
+  {
+    display:none;
+  }
+
+  &:hover
+  {
+    background-color:#eee;
+  }
+}
+
+.nav-holder
+{
+  @include at-query($max,$sm)
+  {
+    padding-left:0px;
+    padding-right:0px;
+  }
+}
+
+.top-nav
+{
+  display:none;
+  padding:0px;
+  margin:0px;
+  text-align:center;
+  @include at-query($min,$sm)
+  {
+    display:block;
+  }
+
+}
+
+.top-nav li
+{
+  display:block;
+  border-top:1px solid #eee;
+  @include at-query($min,$sm)
+  {
+    display:inline-block;
+    border-top:0;
+  }
+}
+
+.top-nav li a
+{
+  display:block;
+  padding:20px 30px;
+
+}
+
+.top-nav li a:hover
+{
+  background-color: #f2f2f2;
+  text-decoration:none;
+}
+
+.btn-block-xs
+{
+  @include at-query($max,$sm)
+  {
+    width:100%;
+  }
+}
+
+.block-padding
+{
+  // 0 to small
+  padding:15px;
+
+  //small and down
+  @include at-query($min,$md)
+  {
+    padding:30px 50px;
+  }
+
+}
+
+#logoutbutton{
+  display:inline-block;
+  padding:10px;
+}
+
+.divider-top{border:1px solid #eee;}
+
